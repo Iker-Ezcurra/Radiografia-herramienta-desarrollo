@@ -3,6 +3,7 @@ const boton2 = document.getElementById("mostrarOcultar")
 const mensaje = document.getElementById("cambiarTexto");
 const ventajas = document.querySelector('#ventajas');
 const caracte = document.getElementById("caracte");
+const filtrar = document.getElementById("filtrar");
 let num = 0;
 const caracteristicas = [
     {nombre: "Multiplataforma", descripcion:"Disponible para sistemas operativos Windows, macOS y Linux"},
@@ -34,19 +35,41 @@ document.addEventListener("DOMContentLoaded", function(){
 
 boton1.addEventListener("click", function(){
     mensaje.textContent = "Haz clickado el boton";
-})
-
-boton1.addEventListener("click", function(){
     num++;
     console.log("Numero de clicks: ", num);
 })
 
 boton2.addEventListener("click", function(){
-    if(ventajas.classList.contains('ocultar')){
-        ventajas.classList.remove('ocultar');
+    ocultar(ventajas);
+})
+
+filtrar.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const valor = filtrar.value.toLowerCase().trim();
+
+        caracte.querySelectorAll(":scope > div").forEach(div => {
+            const titulo = div.querySelector("h3");
+            const texto = div.querySelector("p");
+
+            const coincide =
+                (titulo && titulo.textContent.toLowerCase().includes(valor)) ||
+                (texto && texto.textContent.toLowerCase().includes(valor));
+
+            if (coincide) {
+                div.classList.remove('ocultar');
+            } else {
+                div.classList.add('ocultar');
+            }
+        });
+    }
+});
+
+function ocultar(elemento){
+    if(elemento.classList.contains('ocultar')){
+        elemento.classList.remove('ocultar');
         boton2.textContent = "Ocultar";
     }else{
-        ventajas.classList.add('ocultar');
+        elemento.classList.add('ocultar');
         boton2.textContent = "Mostrar";
     }
-})
+}
